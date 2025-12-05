@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
+db.sqlite3
+.env
+env/
+venv/
+venv*/
+.venv
+/.venv
+media/
+staticfiles/
+node_modules/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Python packaging
+*.egg-info
+dist/
+build/
+
+# Secret key file or settings local
+secrets.json
+settings_local.py
+
+# mypy
+.mypy_cache/
