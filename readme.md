@@ -135,13 +135,6 @@ python manage.py runserver
 
 ---
 
-## 📝 Notes
-
-* SQLite used for learning; PostgreSQL recommended for production.
-* Simplified custom User model; can be upgraded to Django’s AbstractUser.
-
----
-
 ## 📌 Status
 
 This project is currently in **Phase 2: API implementation**, with full models, serializers, and viewsets completed.
