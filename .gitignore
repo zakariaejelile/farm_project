@@ -40,3 +40,4 @@ settings_local.py
 
 # mypy
 .mypy_cache/
+auth.txt
