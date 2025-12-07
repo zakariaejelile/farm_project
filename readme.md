@@ -72,46 +72,6 @@ farm_project/
 └─ requirements.txt
 ```
 
----
-
-## 🛠️ Installation & Setup
-
-### **1. Create virtual environment**
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-```
-
-### **2. Install dependencies**
-
-```bash
-pip install django djangorestframework djangorestframework-simplejwt
-```
-
-### **3. Start project & apps**
-
-```bash
-django-admin startproject farm_project .
-python manage.py startapp core
-python manage.py startapp farm
-```
-
-### **4. Apply migrations**
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### **5. Run server**
-
-```bash
-python manage.py runserver
-```
-
----
-
 ## 🔐 Authentication (JWT)
 
 * Login: `/api/auth/token/`
