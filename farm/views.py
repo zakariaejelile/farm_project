@@ -117,11 +117,10 @@ def food_stock(request):
     foods = FoodStock.objects.all()
     return render(request, 'farm/food_stock.html', {'foods': foods})
 
-def home(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    else:
-        return redirect('animal_list')
+def task_list(request):
+    tasks = Tasks.objects.all()
+    return render(request, 'farm/task_list.html', {'tasks': tasks})
+
 
 
 from django.contrib.auth.decorators import login_required
