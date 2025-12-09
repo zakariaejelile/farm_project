@@ -13,9 +13,22 @@ router.register(r'weatherlogs', views.WeatherLogViewSet) # REGISTERING WEATHER L
 
 
 urlpatterns = [
-    path('', include(router.urls)), # INCLUDING ROUTER URLS
-    path('api/animals/<int:animal_pk>/health/', views.HealthLogViewSet.as_view({'get':'list', 'post':'create'}), name='animal-health'), # NESTED ROUTE FOR ANIMAL HEALTH LOGS
+    # WEB INTERFACE ROUTES
+    path('animals/',views.animal_list,name='animal-list'),
+    path('animals/new/',views.animal_create, name='animal-create'),
+    path('food/', views.food_stock, name='food_stock'),
+    path('tasks/', views.task_list, name='task_list'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+
+    #API ROUTES
+    path('api', include(router.urls)), #  API ROUTES VIA ROUTER
+
+    # NESTED ROUTE FOR ANIMAL HEALTH LOGS
+    path('api/animals/<int:animal_pk>/health/', views.HealthLogViewSet.as_view({'get':'list', 'post':'create'}), name='animal-health'),
+
+    
 ]
+
 
 
 

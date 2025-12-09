@@ -1,0 +1,12 @@
+{% extends 'farm/base.html' %}
+
+{% block content %}
+<h1>Tasks</h1>
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.title }} - Due: {{ task.due_date }} - Completed: {{ task.completed }}</li>
+    {% empty %}
+        <li>No tasks found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

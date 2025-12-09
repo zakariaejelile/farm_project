@@ -1,0 +1,11 @@
+{% extends 'farm/base.html' %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<ul>
+  <li>Total animals: {{ animals_count }}</li>
+  <li>Pending tasks: {{ tasks_pending }}</li>
+  <li>Food items: {{ food_items }}</li>
+</ul>
+{% endblock %}

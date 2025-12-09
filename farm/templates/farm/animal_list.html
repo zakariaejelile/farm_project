@@ -1,0 +1,15 @@
+{% extends 'farm/base.html' %}
+
+{% block content %}
+<h2>Animals</h2>
+
+<a href="{% url 'animal-create' %}">Add Animal</a>
+
+<ul>
+{% for animal in animals %}
+  <li>
+    {{ animal.tag_number }} - {{ animal.name }} ({{ animal.species.name }})
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -90,3 +90,48 @@ class WeatherLogViewSet(viewsets.ModelViewSet):
         return WeatherLog.objects.filter(user=self.request.user).order_by('-logged_at')
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from farm.models import Animal, FoodStock, Tasks
+from farm.forms import AnimalForm, FoodStockForm, TaskForm
+from django.contrib import messages
+
+def animal_list(request):
+    animals = Animal.objects.all()
+    return render(request, 'farm/animal_list.html', {'animals': animals})
+
+def animal_create(request):
+    if request.method == 'POST':
+        form = AnimalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Animal added")
+            return redirect('animal-list')
+    else:
+        form = AnimalForm()
+    return render(request, 'farm/animal_form.html', {'form': form})
+
+
+def food_stock(request): 
+    foods = FoodStock.objects.all()
+    return render(request, 'farm/food_stock.html', {'foods': foods})
+
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
+@login_required
+def task_list(request):
+    tasks = Tasks.objects.filter(user=request.user)
+    return render(request, 'farm/task_list.html', {'tasks': tasks})
+
+
+@login_required
+def dashboard(request):
+    context = {
+        "animals_count": Animal.objects.filter(user=request.user).count(),
+        "tasks_pending": Tasks.objects.filter(user=request.user, completed=False).count(),
+        "food_items": FoodStock.objects.filter(user=request.user).count(),
+    }
+    return render(request, 'farm/dashboard.html', context)
