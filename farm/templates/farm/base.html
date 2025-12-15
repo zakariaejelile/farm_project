@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Farm Management</title>
+    <style>
+        /* Simple navigation styling */
+        nav {
+            background-color: #f4f4f4;
+            padding: 10px;
+        }
+        nav a, nav form button {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        nav form {
+            display: inline;
+        }
+        hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .messages p {
+            background-color: #fffae6;
+            padding: 5px;
+            border: 1px solid #ffe58f;
+        }
+    </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <nav>
     {% if user.is_authenticated %}
-        <a href="{% url 'animal-list' %}">Animals</a> |
-        <a href="{% url 'food_stock' %}">Food Stock</a> |
-        <a href="{% url 'task-list' %}">Tasks</a> |
-        <a href="{% url 'dashboard' %}">Dashboard</a> |
-        <a href="{% url 'logout' %}">Logout</a> ({{ user.username }})
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'animal_list' %}">Animals</a>
+        <a href="{% url 'food_stock' %}">Food Stock</a>
+        <a href="{% url 'task_list' %}">Tasks</a>
+
+        <!-- Logout as POST form for security -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout ({{ user.username }})</button>
+        </form>
+
     {% else %}
         <a href="{% url 'login' %}">Login</a>
     {% endif %}
@@ -19,14 +55,17 @@
 
 <hr>
 
+<!-- Messages -->
+<div class="messages">
 {% if messages %}
   {% for message in messages %}
     <p>{{ message }}</p>
   {% endfor %}
 {% endif %}
+</div>
 
+<!-- Page content -->
 {% block content %}{% endblock %}
 
 </body>
 </html>
-

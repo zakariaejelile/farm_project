@@ -2,10 +2,22 @@ from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from farm.models import Species, Animal, FoodStock, Tasks, HealthLog, ProductionLog, WeatherLog
+#from core.models import User
 from farm.serializers import (
     SpeciesSerializer, AnimalSerializer, FoodStockSerializer,
     TasksSerializer, healthLogSerializer, ProductionLogSerializer, WeatherLogSerializer
 )
+from django.contrib.auth import get_user_model
+from django.shortcuts import render, get_object_or_404, redirect
+from farm.forms import AnimalForm, FoodStockForm, TaskForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
+
+
+User = get_user_model()
+
 
 class SpeciesViewSet(viewsets.ModelViewSet):
     queryset = Species.objects.all()
@@ -92,39 +104,34 @@ class WeatherLogViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-from django.shortcuts import render, get_object_or_404, redirect
-from farm.models import Animal, FoodStock, Tasks
-from farm.forms import AnimalForm, FoodStockForm, TaskForm
-from django.contrib import messages
-
+@login_required
 def animal_list(request):
-    animals = Animal.objects.all()
+    animals = Animal.objects.filter(user=request.user)
     return render(request, 'farm/animal_list.html', {'animals': animals})
 
+
+@login_required
 def animal_create(request):
     if request.method == 'POST':
         form = AnimalForm(request.POST)
         if form.is_valid():
-            form.save()
+            animal = form.save(commit=False)
+            animal.user = request.user
+            animal.save()
             messages.success(request, "Animal added")
-            return redirect('animal-list')
+            return redirect('animal_list')
     else:
         form = AnimalForm()
     return render(request, 'farm/animal_form.html', {'form': form})
+
 
 
 def food_stock(request): 
     foods = FoodStock.objects.all()
     return render(request, 'farm/food_stock.html', {'foods': foods})
 
-def task_list(request):
-    tasks = Tasks.objects.all()
-    return render(request, 'farm/task_list.html', {'tasks': tasks})
 
 
-
-from django.contrib.auth.decorators import login_required
-from django.db.models import Count
 
 @login_required
 def task_list(request):
@@ -134,9 +141,11 @@ def task_list(request):
 
 @login_required
 def dashboard(request):
+    user = request.user  # Already the logged-in user
+
     context = {
-        "animals_count": Animal.objects.filter(user=request.user).count(),
-        "tasks_pending": Tasks.objects.filter(user=request.user, completed=False).count(),
-        "food_items": FoodStock.objects.filter(user=request.user).count(),
+        "animals_count": Animal.objects.filter(user=user).count(),
+        "tasks_pending": Tasks.objects.filter(user=user, completed=False).count(),
+        "food_items": FoodStock.objects.filter(user=user).count(),
     }
     return render(request, 'farm/dashboard.html', context)

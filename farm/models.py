@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import User
+from django.conf import settings # LINK TO USER MODEL FROM SETTINGS(AUTH_USER_MODEL)
 
 class Species(models.Model):
     name = models.CharField(max_length=100)
@@ -17,7 +17,8 @@ class Animal(models.Model):
     hatched_or_born =models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     species = models.ForeignKey(Species, on_delete=models.PROTECT) # LINK TO SPECIES
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # LINK TO USER
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # LINK TO USER
+
 
     def __str__(self):
         return f"{self.tag_number} - {self.name if self.name else 'No Name'}" #DISPLAY TAG_NUMBER AND NAME IF EXISTS
@@ -29,7 +30,7 @@ class FoodStock(models.Model):
     expiry_date = models.DateField(null=True, blank=True)
     daily_consumption_estimate = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    user =models.ForeignKey(User,on_delete=models.CASCADE, related_name="food_stock")  # LINK TO USER
+    user = models.ForeignKey( settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name="food_stock") # LINK TO USER
 
     class Meta:
         unique_together = ('item_name', 'user')  # Ensure unique item names per user
@@ -44,7 +45,7 @@ class Tasks(models.Model):
     due_date = models.DateTimeField(default=False) # to track when the task is due
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")  # LINK TO USER
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tasks")  # LINK TO USER
 
     def __str__(self):
         return self.title
@@ -54,7 +55,7 @@ class HealthLog(models.Model):
     notes = models.TextField()
     treatement = models.TextField()
     logged_at =models.DateField(auto_now_add=True)
-    recorded_by = models.ForeignKey(User,on_delete=models.SET_NULL, null=True, )  # LINK TO USER
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL, null=True, )  # LINK TO USER
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name="health_logs")  # LINK TO ANIMAL
 
     def __str__(self):
@@ -78,7 +79,7 @@ class WeatherLog(models.Model):
     condition = models.CharField(max_length=200)  # e.g., Sunny, Rainy
     uv_index = models.IntegerField()
     logged_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="weather_logs")  # LINK TO USER
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="weather_logs")  # LINK TO USER
 
     def __str__(self):
         return f"{self.logged_at} : {self.temperature}C°, {self.condition}"
