@@ -6,44 +6,36 @@ A modular farm management system built using **Python**, **Django**, and **Djang
 
 ## 🚀 Features
 
-### **Core**
-
+### Core
 * Custom lightweight User model
 * JWT Authentication (Login + Refresh)
 * User registration endpoint
 
-### **Animals & Species**
-
+### Animals & Species
 * CRUD for Species
 * CRUD for Animals
 * Search animals by tag, name, species, or user
 * Automatic filtering by logged-in user
 
-### **Food Stock**
-
+### Food Stock
 * Track quantity, unit, expiry date
 * Filter items by expiry
 * Automatic user association
 
-### **Tasks**
-
+### Tasks
 * CRUD operations
 * Filter by `completed` and `due_date`
 * Custom endpoint `/complete/` to mark task as done
 
-### **Health Logs**
-
-* Nested under animal:
-  `/api/animals/<animal_id>/health/`
+### Health Logs
+* Nested under animal: `/api/animals/<animal_id>/health/`
 * Stores condition, treatment, notes, date, and user who recorded it
 
-### **Production Logs**
-
+### Production Logs
 * Track egg count or weight change
 * Unique per day per animal
 
-### **Weather Logs**
-
+### Weather Logs
 * Temp, humidity, UV index, conditions
 * Auto-timestamps
 * Filtered by logged-in user
@@ -52,53 +44,57 @@ A modular farm management system built using **Python**, **Django**, and **Djang
 
 ## 🧱 Project Structure
 
-```
 farm_project/
 ├─ manage.py
 ├─ farm_project/
-│  ├─ settings.py
-│  ├─ urls.py
+│ ├─ settings.py
+│ ├─ urls.py
 ├─ core/
-│  ├─ models.py
-│  ├─ views.py
-│  ├─ urls.py
+│ ├─ models.py
+│ ├─ views.py
+│ ├─ urls.py
 ├─ farm/
-│  ├─ models.py
-│  ├─ serializers.py
-│  ├─ views.py
-│  ├─ urls.py
-│  ├─ templates/
+│ ├─ models.py
+│ ├─ serializers.py
+│ ├─ views.py
+│ ├─ urls.py
+│ ├─ templates/
 ├─ templates/
 └─ requirements.txt
-```
+
+
+---
 
 ## 🔐 Authentication (JWT)
 
-* Login: `/api/auth/token/`
-* Refresh: `/api/auth/token/refresh/`
+* Login: `/api/token/`
+* Refresh: `/api/token/refresh/`
 * Register: `/api/auth/register/`
 
 ---
 
 ## 📦 API Endpoints
 
-| Feature              | Endpoint                    |
-| -------------------- | --------------------------- |
-| Species              | `/api/species/`             |
-| Animals              | `/api/animals/`             |
-| Food Stock           | `/api/food/`                |
-| Tasks                | `/api/tasks/`               |
-| Mark task completed  | `/api/tasks/<id>/complete/` |
-| Health logs (nested) | `/api/animals/<id>/health/` |
-| Production logs      | `/api/production/`          |
-| Weather logs         | `/api/weather/`             |
+| Feature              | Endpoint                     |
+| -------------------- | ---------------------------- |
+| Species              | `/api/species/`              |
+| Animals              | `/api/animals/`              |
+| Food Stock           | `/api/food/`                 |
+| Tasks                | `/api/tasks/`                |
+| Mark task completed  | `/api/tasks/<id>/complete/`  |
+| Health logs (nested) | `/api/animals/<id>/health/`  |
+| Production logs      | `/api/production/`           |
+| Weather logs         | `/api/weather/`              |
 
 ---
 
 ## 📌 Status
 
-This project is currently in **Phase 2: API implementation**, with full models, serializers, and viewsets completed.
+- **Phase 0 – Setup** ✅ Completed  
+- **Phase 1 – Models** ✅ Completed  
+- **Phase 2 – API** ✅ Completed  
+- **Phase 3 – Authentication & Permissions** 🔄 In progress  
+- **Phase 4 – Frontend / UI**  🔄 In progress   
+- **Phase 5 – Deployment** 🔜 Upcoming
 
-More phases (authentication, frontend, deployment) will come next.
-
----
+Backend foundation is established; next steps include authentication completion, frontend connection, and testing.
