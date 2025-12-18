@@ -1,6 +1,12 @@
-{% extends 'farm/base.html' %}
+{% extends "farm/base.html" %}
 
 {% block content %}
-<h1>Food Stock</h1>
-<p>Food items will be listed here.</p>
+    <h1>Food Stock</h1>
+          <ul>
+            {% for stock in stocks %}
+              <li>
+                {{ stock.name }} - {{ stock.quantity }} - {{ stock.expiry_date }}
+              </li>
+            {% endfor %}
+          </ul>
 {% endblock %}

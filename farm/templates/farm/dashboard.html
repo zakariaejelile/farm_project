@@ -1,11 +1,50 @@
-{% extends 'farm/base.html' %}
+{% extends "farm/base.html" %}
 
-{% block content %}
-<h2>Dashboard</h2>
-
-<ul>
-  <li>Total animals: {{ animals_count }}</li>
-  <li>Pending tasks: {{ tasks_pending }}</li>
-  <li>Food items: {{ food_items }}</li>
-</ul>
-{% endblock %}
+          {% block content %}
+            <h3>Dashboard</h3>
+            <div class="col-span-12 xl:col-span-4 md:col-span-6">
+            <div class="card">
+              <div class="card-header !pb-0 !border-b-0">
+                <a href="{% url 'animal_list' %}" class="pc-link"><h5>Total animals</h5></a>
+              </div>
+              <div class="card-body">
+                <div class="flex items-center justify-between gap-3 flex-wrap">
+                  <h3 class="font-light flex items-center mb-0">
+                    <i class="ph ph-arrow-up text-success-500 text-[30px] mr-1.5"></i>
+                    {{ animals_count }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 xl:col-span-4 md:col-span-6">
+            <div class="card">
+              <div class="card-header !pb-0 !border-b-0">
+                <a href="{% url 'task_list' %}" class="pc-link"><h5>Pending tasks</h5></a>
+              </div>
+              <div class="card-body">
+                <div class="flex items-center justify-between gap-3 flex-wrap">
+                  <h3 class="font-light flex items-center mb-0">
+                    <i class="ph ph-arrow-down text-danger-500 text-[30px] mr-1.5"></i>
+                    {{ tasks_pending }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 xl:col-span-4">
+            <div class="card">
+              <div class="card-header !pb-0 !border-b-0">
+               <a href="{% url 'food_stock' %}" class="pc-link"><h5>Food items</h5></a>
+              </div>
+              <div class="card-body">
+                <div class="flex items-center justify-between gap-3 flex-wrap">
+                  <h3 class="font-light flex items-center mb-0">
+                    <i class="ph ph-arrow-up text-success-500 text-[30px] mr-1.5"></i>
+                    {{ food_items }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+            {% endblock %}

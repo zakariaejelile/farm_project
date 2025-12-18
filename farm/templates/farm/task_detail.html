@@ -1,0 +1,68 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="card-header flex items-center justify-between">
+        <h5 class="card-title mb-0">task Details</h5>
+        <a href="{% url 'task_list' %}" class="btn btn-light">
+          <i class="ph ph-arrow-left"></i> Back
+        </a>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mb-0">
+            <tbody>
+
+              <tr>
+                <th class="w-40 text-muted">Title</th>
+                <td>{{ task.title }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Description</th>
+                <td>{{ task.description }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Task Type</th>
+                <td>{{ task.task_type }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Due Date</th>
+                <td>{{ task.due_date|date:"Y-m-d" }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Status</th>
+                <td>{{ task.completed }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Created at</th>
+                <td>{{ task.created_at|date:"Y-m-d" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-end">
+        <a href="" class="btn btn-warning">
+        <i class="ph ph-pencil"></i> Edit
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

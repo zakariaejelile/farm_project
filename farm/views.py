@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -13,8 +14,6 @@ from farm.forms import AnimalForm, FoodStockForm, TaskForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-
-
 
 User = get_user_model()
 
@@ -103,11 +102,19 @@ class WeatherLogViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+# ANIMAL VIEWS
 
 @login_required
 def animal_list(request):
     animals = Animal.objects.filter(user=request.user)
     return render(request, 'farm/animal_list.html', {'animals': animals})
+
+
+def animal_detail(request, pk):
+    animal = get_object_or_404(Animal, pk=pk)
+    return render(request, "farm/animal_detail.html", {
+        "animal": animal
+    })
 
 
 @login_required
@@ -124,19 +131,80 @@ def animal_create(request):
         form = AnimalForm()
     return render(request, 'farm/animal_form.html', {'form': form})
 
+def animal_update(request, pk):
+    animal = get_object_or_404(Animal, pk=pk)
+    if request.method == 'POST':
+        form = AnimalForm(request.POST, instance=animal)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Animal updated")
+            return redirect('animal_detail', pk=animal.pk)
+    else:
+        form = AnimalForm(instance=animal)
+
+    return render(request, 'farm/animal_form_update.html', {'form': form})
+
+# Animal Delete
+def animal_delete(request, pk):
+    animal = get_object_or_404(Animal, pk=pk)
+    if request.method == "POST":
+        animal.delete()
+        messages.success(request, "Animal deleted")
+        return redirect('animal_list')
+    return render(request, 'farm/animal_confirm_delete.html', {'animal': animal})
+
+
+
+
+
+
+
+# TASK VIEWS
+@login_required
+def task_list(request):
+    tasks = Tasks.objects.filter(user=request.user)
+    return render(request, 'farm/task_list.html', {'tasks': tasks})
+
+def task_detail(request, pk):
+    task = get_object_or_404(Tasks, pk=pk)
+    return render(request, "farm/task_detail.html", {
+        "task": task
+    })
+
+def task_create(request):
+    form = TaskForm(request.POST or None)
+    if form.is_valid():
+        task = form.save(commit=False)  # don't save to DB yet
+        task.user = request.user        # assign the logged-in user
+        task.save()                     # now save to DB
+        return redirect('task_list')
+    return render(request, "farm/task_form.html", {"form": form})
+
+def task_update(request, pk):
+    task = get_object_or_404(Tasks, pk=pk)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Task updated")
+            return redirect('task_detail', pk=task.pk)
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, 'farm/task_form_update.html', {'form': form})
+
+def task_delete(request, pk):
+    task = get_object_or_404(Tasks, pk=pk)
+    if request.method == "POST":
+        task.delete()
+        messages.success(request, "Task deleted")
+        return redirect('task_list')
+    return render(request, 'farm/task_confirm_delete.html', {'task': task})
 
 
 def food_stock(request): 
     foods = FoodStock.objects.all()
     return render(request, 'farm/food_stock.html', {'foods': foods})
-
-
-
-
-@login_required
-def task_list(request):
-    tasks = Tasks.objects.filter(user=request.user)
-    return render(request, 'farm/task_list.html', {'tasks': tasks})
 
 
 @login_required

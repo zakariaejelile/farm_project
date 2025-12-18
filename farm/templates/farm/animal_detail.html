@@ -1,0 +1,74 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="card-header flex items-center justify-between">
+        <h5 class="card-title mb-0">Animal Details</h5>
+        <a href="{% url 'animal_list' %}" class="btn btn-light">
+          <i class="ph ph-arrow-left"></i> Back
+        </a>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mb-0">
+            <tbody>
+
+              <tr>
+                <th class="w-40 text-muted">Tag Number</th>
+                <td>{{ animal.tag_number }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Name</th>
+                <td>{{ animal.name }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Species</th>
+                <td>{{ animal.species.name }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Breed</th>
+                <td>{{ animal.breed }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Birth Date</th>
+                <td>{{ animal.hatched_or_born|date:"Y-m-d" }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Weight</th>
+                <td>{{ animal.weight }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Health Status</th>
+                <td>{{ animal.health_status }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-end">
+        <a href="{% url 'animal_update' animal.pk %}" class="btn btn-warning">
+        <i class="ph ph-pencil"></i> Edit
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

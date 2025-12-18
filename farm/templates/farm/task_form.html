@@ -1,0 +1,68 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+<div class="pc-card max-w-4xl mx-auto mt-10">
+  <div class="pc-card-header">
+    <h5 class="text-xl font-semibold">
+      {% if form.instance.pk %}Edit Task{% else %}Add Task{% endif %}
+    </h5>
+  </div>
+
+  <div class="pc-card-body">
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% csrf_token %}
+
+      <!-- Title -->
+      <div class="flex flex-col">
+        <label class="form-label fw-semibold mb-1">{{ form.title.label }}</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.title.errors }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Description -->
+      <div class="flex flex-col">
+        <label class="form-label fw-semibold mb-1">{{ form.description.label }}</label>
+        {{ form.description }}
+        {% if form.description.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.description.errors }}</p>
+        {% endif %}
+      </div>
+
+    <!-- Task type -->
+  <div class="flex flex-col">
+    <label class="form-label fw-semibold mb-1 text-xl font-semibold">{{ form.task_type.label }}</label>
+    {{ form.task_type }}
+    {% if form.task_type.errors %}
+    <p class="text-red-500 text-sm mt-1">{{ form.task_type.errors }}</p>
+    {% endif %}
+  </div>
+
+      <!-- Due date -->
+      <div class="flex flex-col">
+        <label class="form-label fw-semibold mb-1">{{ form.due_date.label }}</label>
+        {{ form.due_date }}
+        {% if form.due_date.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.due_date.errors }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Completed checkbox -->
+      <div class="col-span-2 flex items-center space-x-2 mt-2">
+        {{ form.completed }}
+        <label class="form-label fw-semibold">{{ form.completed.label }}</label>
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-span-2 flex justify-end space-x-3 mt-4">
+        <button type="submit" class="btn btn-primary px-6 py-2">
+          {% if form.instance.pk %}Update{% else %}Save{% endif %}
+        </button>
+        <a href="{% url 'task_list' %}" class="btn btn-secondary px-6 py-2">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
