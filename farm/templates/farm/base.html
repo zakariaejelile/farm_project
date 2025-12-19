@@ -4,22 +4,13 @@
 
    <head>
     {% load static %}
-    <title>Home | Datta Able Dashboard Template</title>
+    <title>Farm Management App</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="description"
-      content="Datta Able is trending dashboard template made using Bootstrap 5 design framework. Datta Able is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
-    />
-    <meta
-      name="keywords"
-      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
-    />
-    <meta name="author" content="CodedThemes" />
 
     <!-- Favicon -->
-    <link rel="icon" href="{% static 'farm/assets/images/favicon.svg' %}" type="image/x-icon" />
+    <link rel="icon" href="{% static 'farm/assets/images/farm_logo.svg' %}"/>
 
     <!-- Map-vector css -->
     <link rel="stylesheet" href="{% static 'farm/assets/css/plugins/jsvectormap.min.css' %}" />
@@ -36,8 +27,6 @@
 
   </head>
   <body>
-    <img src="{% static 'farm/assets/images/favicon.svg' %}" width="40">
-
     <!-- Pre-loader -->
     <div class="loader-bg fixed inset-0 bg-white dark:bg-themedark-cardbg z-[1034]">
       <div class="loader-track h-[5px] w-full inline-block absolute overflow-hidden top-0">
@@ -50,8 +39,8 @@
   <div class="navbar-wrapper">
     <div class="m-header flex items-center py-4 px-6 h-header-height">
       <a href="{% url 'dashboard' %}" class="b-brand flex items-center gap-3">
-        <!-- ========   Change your logo from here   ============ -->
-        <i class="fa-solid fa-tractor"></i>
+        <!-- ========    logo    ============ -->
+        <img src="{% static 'farm/assets/images/farm_logo.svg' %}" alt="logo" style="width:80px;height:80px" />
       </a>
     </div>
     <div class="navbar-content h-[calc(100vh_-_74px)] py-2.5">
@@ -119,7 +108,7 @@
           </a>
         </li>
         <li class="pc-item pc-caption">
-          <label data-i18n="Other">Other</label>
+          <label data-i18n="Other">Upcomming Features</label>
           <i class="ph ph-tree-structure"></i>
         </li>
         <li class="pc-item pc-hasmenu">
@@ -128,45 +117,45 @@
             ><span class="pc-arrow"><i class="ti ti-chevron-right"></i></span
           ></a>
           <ul class="pc-submenu">
-            <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 2.1">Level 2.1</a></li>
+            <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 2.1">Feature 1</a></li>
             <li class="pc-item pc-hasmenu">
               <a href="#!" class="pc-link">
-                <span data-i18n="Level 2.2">Level 2.2</span>
+                <span data-i18n="Level 2.2">Feature 2</span>
                 <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span
               ></a>
               <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.1">Level 3.1</a></li>
-                <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.2">Level 3.2</a></li>
+                <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.1">Level 2.1</a></li>
+                <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.2">Level 2.2</a></li>
                 <li class="pc-item pc-hasmenu">
                   <a href="#!" class="pc-link">
-                    <span data-i18n="Level 3.3">Level 3.3</span>
+                    <span data-i18n="Level 3.3">Level 2.3</span>
                     <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
                   </a>
                   <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.1">Level 4.1</a></li>
-                    <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.2">Level 4.2</a></li>
+                    <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.1">Level 2.1</a></li>
+                    <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.2">Level 2.2</a></li>
                   </ul>
                 </li>
               </ul>
             </li>
             <li class="pc-item pc-hasmenu">
               <a href="#!" class="pc-link">
-                <span data-i18n="Level 2.3">Level 2.3</span>
+                <span data-i18n="Level 2.3">Feature 3</span>
                 <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span
               ></a>
               <ul class="pc-submenu">
                 <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.1">Level 3.1</a></li>
                 <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 3.2">Level 3.2</a></li>
                 <li class="pc-item pc-hasmenu">
-                  <a href="#!" class="pc-link">
-                    <span data-i18n="Level 3.3">Level 3.3</span>
+                  <a href="#!" class="pc-link"> 
+                    <span data-i18n="Level 3.3">Level 3.3</span> 
                     <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
                   </a>
                   <ul class="pc-submenu">
                     <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.1">Level 4.1</a></li>
                     <li class="pc-item"><a class="pc-link" href="#!" data-i18n="Level 4.2">Level 4.2</a></li>
                   </ul>
-                </li>
+                </li> 
               </ul>
             </li>
           </ul>
@@ -254,7 +243,7 @@
                 </div>
                 <div class="grow">
                   <span class="float-end text-sm text-muted">2 min ago</span>
-                  <h5 class="text-body mb-2">UI/UX Design</h5>
+                  <h5 class="text-body mb-2">Notification N01</h5>
                   <p class="mb-0">
                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
                     printer took a galley of
@@ -273,7 +262,7 @@
                 </div>
                 <div class="grow ms-3">
                   <span class="float-end text-sm text-muted">2 hour ago</span>
-                  <h5 class="text-body mb-2">Forms</h5>
+                  <h5 class="text-body mb-2">Notification N02</h5>
                   <p class="mb-0">
                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
                     printer took a galley of

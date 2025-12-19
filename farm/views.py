@@ -1,9 +1,7 @@
-from django.http import HttpResponse
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from farm.models import Species, Animal, FoodStock, Tasks, HealthLog, ProductionLog, WeatherLog
-#from core.models import User
 from farm.serializers import (
     SpeciesSerializer, AnimalSerializer, FoodStockSerializer,
     TasksSerializer, healthLogSerializer, ProductionLogSerializer, WeatherLogSerializer
@@ -17,6 +15,7 @@ from .utils import get_weather
 
 User = get_user_model()
 
+# api view
 class SpeciesViewSet(viewsets.ModelViewSet):
     queryset = Species.objects.all()
     serializer_class = SpeciesSerializer
@@ -157,21 +156,24 @@ def task_list(request):
     tasks = Tasks.objects.filter(user=request.user)
     return render(request, 'farm/task_list.html', {'tasks': tasks})
 
+@login_required
 def task_detail(request, pk):
     task = get_object_or_404(Tasks, pk=pk)
     return render(request, "farm/task_detail.html", {
         "task": task
     })
 
+@login_required
 def task_create(request):
     form = TaskForm(request.POST or None)
     if form.is_valid():
-        task = form.save(commit=False)  # don't save to DB yet
+        task = form.save(commit=False)  # do not save to DB yet
         task.user = request.user        # assign the logged-in user
-        task.save()                     # now save to DB
+        task.save()                     #  save to DB
         return redirect('task_list')
     return render(request, "farm/task_form.html", {"form": form})
 
+@login_required
 def task_update(request, pk):
     task = get_object_or_404(Tasks, pk=pk)
     if request.method == 'POST':
@@ -185,6 +187,7 @@ def task_update(request, pk):
 
     return render(request, 'farm/task_form_update.html', {'form': form})
 
+@login_required
 def task_delete(request, pk):
     task = get_object_or_404(Tasks, pk=pk)
     if request.method == "POST":
@@ -284,16 +287,19 @@ def production_delete(request, pk):
 
 # HEALTH LOG VIEWS
 
+@login_required
 def health_log_list(request):
     health_logs = HealthLog.objects.filter(recorded_by=request.user)
     return render(request, 'farm/health_log_list.html', {'health_logs': health_logs})
 
+@login_required
 def health_log_detail(request, pk):
     health_log = get_object_or_404(HealthLog, pk=pk)
     return render(request, "farm/health_log_detail.html", {
         "health_log": health_log
     })
 
+@login_required
 def health_log_create(request):
     form = HealthLogForm(request.POST or None)
     if form.is_valid():
@@ -304,6 +310,7 @@ def health_log_create(request):
         return redirect('health_log_list')
     return render(request, "farm/health_log_form.html", {"form": form})
 
+@login_required
 def health_log_update(request, pk):
     health_log = get_object_or_404(HealthLog, pk=pk)
     if request.method == 'POST':
@@ -317,6 +324,7 @@ def health_log_update(request, pk):
 
     return render(request, 'farm/health_log_form_update.html', {'form': form})  
 
+@login_required
 def health_log_delete(request, pk):
     health_log = get_object_or_404(HealthLog, pk=pk)
     if request.method == "POST":
@@ -324,6 +332,8 @@ def health_log_delete(request, pk):
         messages.success(request, "Health log deleted")
         return redirect('health_log_list')
     return render(request, 'farm/health_log_confirm_delete.html', {'health_log': health_log})
+
+# WEATHER VIEW
 
 @login_required
 def weather_data(request):
@@ -335,7 +345,9 @@ def weather_data(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')    
+    return redirect('login')   
+
+# DASHBOARD VIEW 
 
 @login_required
 def dashboard(request):
@@ -345,6 +357,8 @@ def dashboard(request):
         "animals_count": Animal.objects.filter(user=user).count(),
         "tasks_pending": Tasks.objects.filter(user=user, completed=False).count(),
         "food_items": FoodStock.objects.filter(user=user).count(),
+        "production_logs": ProductionLog.objects.filter(animal__user=user).count(),
+        "health_logs": HealthLog.objects.filter(recorded_by=user).count(),
     }
 
     # weather data
