@@ -1,0 +1,69 @@
+{% extends "farm/base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if weather %}
+<!-- Weather Card Centered -->
+<div class="flex justify-center my-8">
+  <div class="card p-8 flex items-center justify-center shadow-lg border rounded-2xl bg-blue-50 w-full md:w-2/3 lg:w-1/2">
+    
+    <!-- Weather Icon -->
+    <div class="text-center mr-6">
+      <img src="{{ weather.icon }}" alt="Weather icon" class="w-24 h-24 mx-auto mb-2">
+    </div>
+
+    <!-- Weather Info -->
+    <div>
+      <h2 class="text-2xl font-bold mb-2 text-center">{{ weather.city }}</h2>
+      <p class="text-lg mb-1 text-center">{{ weather.description }}</p>
+      <p class="text-lg font-semibold text-center">
+        {{ weather.temperature }}°C | Humidity: {{ weather.humidity }}% | Wind: {{ weather.wind_speed }} m/s
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Weather Data Table -->
+<div class="flex justify-center my-6">
+  <div class="card shadow-lg rounded-2xl border w-full md:w-2/3 lg:w-1/2">
+    <div class="card-header">
+      <h5 class="card-title mb-0 text-center">Weather Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0 w-full">
+          <tbody>
+            <tr>
+              <th class="text-muted w-40">City</th>
+              <td>{{ weather.city }}</td>
+            </tr>
+            <tr>
+              <th class="text-muted">Description</th>
+              <td>{{ weather.description }}</td>
+            </tr>
+            <tr>
+              <th class="text-muted">Temperature</th>
+              <td>{{ weather.temperature }}°C</td>
+            </tr>
+            <tr>
+              <th class="text-muted">Humidity</th>
+              <td>{{ weather.humidity }}%</td>
+            </tr>
+            <tr>
+              <th class="text-muted">Wind Speed</th>
+              <td>{{ weather.wind_speed }} m/s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<p class="text-center text-gray-500 mt-8">Weather data not available.</p>
+{% endif %}
+
+{% endblock %}

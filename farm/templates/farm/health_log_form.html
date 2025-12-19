@@ -1,0 +1,74 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="card-header flex items-center justify-between">
+        <h5 class="card-title mb-0">Add Health Log</h5>
+        <a href="{% url 'health_log_list' %}" class="btn btn-outline-secondary">
+          <i class="ph ph-arrow-left"></i> Back
+        </a>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <form method="post" class="grid grid-cols-12 gap-6">
+          {% csrf_token %}
+
+          <!-- Animal -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="form-label fw-semibold">{{ form.animal.label }}</label>
+            {{ form.animal }}
+            {{ form.animal.errors }}
+          </div>
+
+          <!-- Logged At -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="form-label fw-semibold">{{ form.logged_at.label }}</label>
+            {{ form.logged_at }}
+            {{ form.logged_at.errors }}
+          </div>
+
+          <!-- Condition -->
+          <div class="col-span-12">
+            <label class="form-label fw-semibold">{{ form.condition.label }}</label>
+            {{ form.condition }}
+            {{ form.condition.errors }}
+          </div>
+
+          <!-- Notes -->
+          <div class="col-span-12">
+            <label class="form-label fw-semibold">{{ form.notes.label }}</label>
+            {{ form.notes }}
+            {{ form.notes.errors }}
+          </div>
+
+          <!-- Treatment -->
+          <div class="col-span-12">
+            <label class="form-label fw-semibold">{{ form.treatement.label }}</label>
+            {{ form.treatement }}
+            {{ form.treatement.errors }}
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-span-12 flex justify-end gap-3 mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="ph ph-check"></i> Save
+            </button>
+            <a href="{% url 'health_log_list' %}" class="btn btn-outline-secondary">
+              Cancel
+            </a>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

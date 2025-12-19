@@ -1,0 +1,58 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="card-header flex items-center justify-between">
+        <h5 class="card-title mb-0">Production Log Details</h5>
+        <a href="{% url 'production_list' %}" class="btn btn-light">
+          <i class="ph ph-arrow-left"></i> Back
+        </a>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mb-0">
+            <tbody>
+
+              <tr>
+                <th class="w-40 text-muted">Animal</th>
+                <td>{{ production.animal }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Date</th>
+                <td>{{ production.date|date:"Y-m-d" }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Eggs Count</th>
+                <td>{{ production.eggs_count }}</td>
+              </tr>
+
+              <tr>
+                <th class="text-muted">Weight Produced (kg)</th>
+                <td>{{ production.weight_produced }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-end">
+        <a href="{% url 'production_update' production.pk %}" class="btn btn-warning">
+          <i class="ph ph-pencil"></i> Edit
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -8,12 +8,11 @@
 
       <!-- Header -->
       <div class="card-header flex items-center justify-between">
-        <h5 class="card-title mb-0">task Details</h5>
-        <a href="{% url 'task_list' %}" class="btn btn-light">
+        <h5 class="card-title mb-0">Food Stock Item Details</h5>
+        <a href="{% url 'food_stock' %}" class="btn btn-light">
           <i class="ph ph-arrow-left"></i> Back
         </a>
       </div>
-
       <!-- Body -->
       <div class="card-body">
         <div class="table-responsive">
@@ -21,33 +20,33 @@
             <tbody>
 
               <tr>
-                <th class="w-40 text-muted">Title</th>
-                <td>{{ task.title }}</td>
+                <th class="w-40 text-muted">Item Name</th>
+                <td>{{ food.item_name }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Description</th>
-                <td>{{ task.description }}</td>
+                <th class="text-muted">Quantity</th>
+                <td>{{ food.quantity }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Task Type</th>
-                <td>{{ task.task_type }}</td>
+                <th class="text-muted">Unit</th>
+                <td>{{ food.unit }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Due Date</th>
-                <td>{{ task.due_date|date:"Y-m-d" }}</td>
+                <th class="text-muted">Expiry Date</th>
+                <td>{{ food.expiry_date|date:"Y-m-d" }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Status</th>
-                <td>{{ task.completed }}</td>
+                <th class="text-muted">daily_Consumption_Estimate</th>
+                <td>{{ food.daily_consumption_estimate }}</td>
               </tr>
 
               <tr>
                 <th class="text-muted">Created at</th>
-                <td>{{ task.created_at|date:"Y-m-d" }}</td>
+                <td>{{ food.created_at|date:"Y-m-d" }}</td>
               </tr>
             </tbody>
           </table>
@@ -56,7 +55,7 @@
 
       <!-- Footer -->
       <div class="card-footer text-end">
-        <a href="{% url 'task_update' task.pk %}" class="btn btn-warning">
+        <a href="{% url 'food_stock_update' food.pk %}" class="btn btn-warning">
         <i class="ph ph-pencil"></i> Edit
         </a>
       </div>

@@ -8,8 +8,8 @@
 
       <!-- Header -->
       <div class="card-header flex items-center justify-between">
-        <h5 class="card-title mb-0">task Details</h5>
-        <a href="{% url 'task_list' %}" class="btn btn-light">
+        <h5 class="card-title mb-0">Health Log Details</h5>
+        <a href="{% url 'health_log_list' %}" class="btn btn-light">
           <i class="ph ph-arrow-left"></i> Back
         </a>
       </div>
@@ -21,34 +21,35 @@
             <tbody>
 
               <tr>
-                <th class="w-40 text-muted">Title</th>
-                <td>{{ task.title }}</td>
+                <th class="w-40 text-muted">Animal</th>
+                <td>{{ health_log.animal }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Description</th>
-                <td>{{ task.description }}</td>
+                <th class="text-muted">Condition</th>
+                <td>{{ health_log.condition }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Task Type</th>
-                <td>{{ task.task_type }}</td>
+                <th class="text-muted">Treatment</th>
+                <td>{{ health_log.treatement }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Due Date</th>
-                <td>{{ task.due_date|date:"Y-m-d" }}</td>
+                <th class="text-muted">Notes</th>
+                <td>{{ health_log.notes }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Status</th>
-                <td>{{ task.completed }}</td>
+                <th class="text-muted">Logged At</th>
+                <td>{{ health_log.logged_at|date:"Y-m-d" }}</td>
               </tr>
 
               <tr>
-                <th class="text-muted">Created at</th>
-                <td>{{ task.created_at|date:"Y-m-d" }}</td>
+                <th class="text-muted">Recorded By</th>
+                <td>{{ health_log.recorded_by }}</td>
               </tr>
+
             </tbody>
           </table>
         </div>
@@ -56,8 +57,8 @@
 
       <!-- Footer -->
       <div class="card-footer text-end">
-        <a href="{% url 'task_update' task.pk %}" class="btn btn-warning">
-        <i class="ph ph-pencil"></i> Edit
+        <a href="{% url 'health_log_update' health_log.pk %}" class="btn btn-warning">
+          <i class="ph ph-pencil"></i> Edit
         </a>
       </div>
 

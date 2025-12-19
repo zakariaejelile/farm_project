@@ -8,15 +8,14 @@ from farm.serializers import (
     SpeciesSerializer, AnimalSerializer, FoodStockSerializer,
     TasksSerializer, healthLogSerializer, ProductionLogSerializer, WeatherLogSerializer
 )
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.shortcuts import render, get_object_or_404, redirect
-from farm.forms import AnimalForm, FoodStockForm, TaskForm
+from farm.forms import AnimalForm, FoodStockForm, HealthLogForm, TaskForm, ProductionLogForm ,HealthLogForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from .utils import get_weather
 
 User = get_user_model()
-
 
 class SpeciesViewSet(viewsets.ModelViewSet):
     queryset = Species.objects.all()
@@ -116,7 +115,6 @@ def animal_detail(request, pk):
         "animal": animal
     })
 
-
 @login_required
 def animal_create(request):
     if request.method == 'POST':
@@ -144,7 +142,6 @@ def animal_update(request, pk):
 
     return render(request, 'farm/animal_form_update.html', {'form': form})
 
-# Animal Delete
 def animal_delete(request, pk):
     animal = get_object_or_404(Animal, pk=pk)
     if request.method == "POST":
@@ -152,11 +149,6 @@ def animal_delete(request, pk):
         messages.success(request, "Animal deleted")
         return redirect('animal_list')
     return render(request, 'farm/animal_confirm_delete.html', {'animal': animal})
-
-
-
-
-
 
 
 # TASK VIEWS
@@ -201,19 +193,164 @@ def task_delete(request, pk):
         return redirect('task_list')
     return render(request, 'farm/task_confirm_delete.html', {'task': task})
 
-
+# FOOD STOCK VIEWS
+@login_required
 def food_stock(request): 
-    foods = FoodStock.objects.all()
-    return render(request, 'farm/food_stock.html', {'foods': foods})
+    food_stocks = FoodStock.objects.filter(user=request.user)
+    return render(request, 'farm/food_stock.html', {
+        'food_stocks': food_stocks
+    })
 
+@login_required
+def food_stock_detail(request, pk):
+    food = get_object_or_404(FoodStock, pk=pk, user=request.user)
+    return render(request, "farm/food_stock_detail.html", {
+        "food": food
+    })
+
+@login_required
+def food_stock_create(request):
+    form = FoodStockForm(request.POST or None)
+    if form.is_valid():
+        food = form.save(commit=False)
+        food.user = request.user
+        food.save()
+        messages.success(request, "Food stock added")
+        return redirect('food_stock')
+    return render(request, "farm/food_stock_form.html", {"form": form})
+
+@login_required
+def food_stock_update(request, pk):
+    food = get_object_or_404(FoodStock, pk=pk, user=request.user)
+    form = FoodStockForm(request.POST or None, instance=food)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Food stock updated")
+        return redirect('food_stock')
+    return render(request, 'farm/food_stock_form_update.html', {'form': form})
+
+@login_required
+def food_stock_delete(request, pk):
+    food = get_object_or_404(FoodStock, pk=pk, user=request.user)
+    if request.method == "POST":
+        food.delete()
+        messages.success(request, "Food stock deleted")
+        return redirect('food_stock')
+    return render(request, 'farm/food_stock_confirm_delete.html', {'food': food})
+
+
+# PRODUCTION LOG VIEWS
+@login_required
+def production_list(request):
+    production_logs = ProductionLog.objects.filter(animal__user=request.user)
+    return render(request, 'farm/production_list.html', {'production_logs': production_logs})
+
+@login_required
+def production_detail(request, pk):
+    production = get_object_or_404(ProductionLog, pk=pk)
+    return render(request, "farm/production_detail.html", {
+        "production": production
+    })
+@login_required
+def production_create(request):
+    form = ProductionLogForm(request.POST or None)
+    if form.is_valid():
+        production = form.save(commit=False)
+        production.recorded_by_user = request.user
+        production.save()
+        messages.success(request, "Production log added")
+        return redirect('production_list')
+    return render(request, "farm/production_form.html", {"form": form})
+
+@login_required
+def production_update(request, pk):
+    production = get_object_or_404(ProductionLog, pk=pk)
+    form = ProductionLogForm(request.POST or None, instance=production)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Production log updated")
+        return redirect('production_list')
+    return render(request, 'farm/production_form_update.html', {'form': form})
+
+@login_required
+def production_delete(request, pk):
+    production = get_object_or_404(ProductionLog, pk=pk)
+    if request.method == "POST":
+        production.delete()
+        messages.success(request, "Production log deleted")
+        return redirect('production_list')
+    return render(request, 'farm/production_confirm_delete.html', {'production': production})
+
+
+# HEALTH LOG VIEWS
+
+def health_log_list(request):
+    health_logs = HealthLog.objects.filter(recorded_by=request.user)
+    return render(request, 'farm/health_log_list.html', {'health_logs': health_logs})
+
+def health_log_detail(request, pk):
+    health_log = get_object_or_404(HealthLog, pk=pk)
+    return render(request, "farm/health_log_detail.html", {
+        "health_log": health_log
+    })
+
+def health_log_create(request):
+    form = HealthLogForm(request.POST or None)
+    if form.is_valid():
+        health_log = form.save(commit=False)
+        health_log.recorded_by = request.user
+        health_log.save()
+        messages.success(request, "Health log added")
+        return redirect('health_log_list')
+    return render(request, "farm/health_log_form.html", {"form": form})
+
+def health_log_update(request, pk):
+    health_log = get_object_or_404(HealthLog, pk=pk)
+    if request.method == 'POST':
+        form = HealthLogForm(request.POST, instance=health_log)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Health log updated")
+            return redirect('health_log_detail', pk=health_log.pk)
+    else:
+        form = HealthLogForm(instance=health_log)
+
+    return render(request, 'farm/health_log_form_update.html', {'form': form})  
+
+def health_log_delete(request, pk):
+    health_log = get_object_or_404(HealthLog, pk=pk)
+    if request.method == "POST":
+        health_log.delete()
+        messages.success(request, "Health log deleted")
+        return redirect('health_log_list')
+    return render(request, 'farm/health_log_confirm_delete.html', {'health_log': health_log})
+
+@login_required
+def weather_data(request):
+    city  = "meknes"  
+    api_key  = "2ff0f2995686c35cf9505db564070d02" 
+    weather = get_weather(city=city, api_key=api_key)
+    return render(request, "farm/weather_data.html", {"weather": weather})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')    
 
 @login_required
 def dashboard(request):
-    user = request.user  # Already the logged-in user
-
+    user = request.user
+    # Count
     context = {
         "animals_count": Animal.objects.filter(user=user).count(),
         "tasks_pending": Tasks.objects.filter(user=user, completed=False).count(),
         "food_items": FoodStock.objects.filter(user=user).count(),
     }
+
+    # weather data
+    weather = get_weather(city="meknes", api_key="2ff0f2995686c35cf9505db564070d02")
+    context["weather"] = weather
+
     return render(request, 'farm/dashboard.html', context)
+
+

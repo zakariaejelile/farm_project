@@ -1,0 +1,85 @@
+{% extends "farm/base.html" %}
+
+{% block content %}
+
+<div class="grid grid-cols-12 gap-6">
+  <div class="col-span-12">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="card-header flex items-center justify-between">
+        <h5 class="card-title mb-0">Add Food Stock</h5>
+        <a href="{% url 'food_stock' %}" class="btn btn-outline-secondary">
+          <i class="ph ph-arrow-left"></i> Back
+        </a>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+
+        <form method="post" class="grid grid-cols-12 gap-6">
+          {% csrf_token %}
+
+          <!-- Item Name -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="form-label fw-semibold">
+              {{ form.item_name.label }}
+            </label>
+            {{ form.item_name }}
+            {{ form.item_name.errors }}
+          </div>
+
+          <!-- Quantity -->
+          <div class="col-span-12 md:col-span-3">
+            <label class="form-label fw-semibold">
+              {{ form.quantity.label }}
+            </label>
+            {{ form.quantity }}
+            {{ form.quantity.errors }}
+          </div>
+
+          <!-- Unit -->
+          <div class="col-span-12 md:col-span-3">
+            <label class="form-label fw-semibold">
+              {{ form.unit.label }}
+            </label>
+            {{ form.unit }}
+            {{ form.unit.errors }}
+          </div>
+
+          <!-- Expiry Date -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="form-label fw-semibold">
+              {{ form.expiry_date.label }}
+            </label>
+            {{ form.expiry_date }}
+            {{ form.expiry_date.errors }}
+          </div>
+
+          <!-- Daily Consumption -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="form-label fw-semibold">
+              {{ form.daily_consumption_estimate.label }}
+            </label>
+            {{ form.daily_consumption_estimate }}
+            {{ form.daily_consumption_estimate.errors }}
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-span-12 flex justify-end gap-3 mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="ph ph-check"></i> Save
+            </button>
+            <a href="{% url 'food_stock' %}" class="btn btn-outline-secondary">
+              Cancel
+            </a>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
