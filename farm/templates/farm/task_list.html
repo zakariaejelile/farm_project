@@ -7,18 +7,33 @@
     <div class="card">
       <div class="card-header flex items-center justify-between">
         <h5 class="card-title mb-0">Tasks</h5>
-                <a href="{% url 'task_create' %}" class="btn btn-primary">
+        <a href="{% url 'task_create' %}" class="btn btn-primary">
           <i class="ph ph-plus"></i> Add Task
         </a>
       </div>
 
       <div class="card-body">
+
+        <!-- Task Status Filter -->
+        <div class="mb-4">
+          <form method="get" class="flex items-center gap-2">
+            <select name="status" class="form-select form-select-sm">
+              <option value="">All Tasks</option>
+              <option value="finished" {% if status_filter == "finished" %}selected{% endif %}>Finished</option>
+              <option value="unfinished" {% if status_filter == "unfinished" %}selected{% endif %}>Unfinished</option>
+            </select>
+            <button type="submit" class="btn btn-outline-primary btn-sm">
+              Filter
+            </button>
+          </form>
+        </div>
+
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
               <tr>
                 <th>Title</th>
-                <th>task_type</th>
+                <th>Task Type</th>
                 <th>Due Date</th>
                 <th>Completed</th>
                 <th class="text-end"></th>
@@ -30,7 +45,13 @@
                 <td><span class="fw-semibold">{{ task.title }}</span></td>
                 <td>{{ task.task_type }}</td>
                 <td>{{ task.due_date|date:"Y-m-d H:i" }}</td>
-                <td>{{ task.completed }}</td>
+                <td>
+                  {% if task.completed %}
+                    <span class="badge bg-success">Yes</span>
+                  {% else %}
+                    <span class="badge bg-warning">No</span>
+                  {% endif %}
+                </td>
                 <td class="text-end">
                   <a href="{% url 'task_detail' task.id %}" class="btn btn-sm btn-outline-primary">
                     <i class="ph ph-eye"></i>
@@ -53,8 +74,8 @@
             </tbody>
           </table>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </div>

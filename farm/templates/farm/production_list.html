@@ -15,6 +15,25 @@
 
       <!-- Body -->
       <div class="card-body">
+
+        <!-- Date Range Filter -->
+        <div class="mb-4">
+          <form method="get" class="flex items-center gap-2 flex-wrap">
+            <label class="form-label mb-0">Start Date:</label>
+            <input type="date" name="start_date" class="form-control form-control-sm" value="{{ start_date }}">
+            
+            <label class="form-label mb-0">End Date:</label>
+            <input type="date" name="end_date" class="form-control form-control-sm" value="{{ end_date }}">
+            
+            <button type="submit" class="btn btn-outline-primary btn-sm">
+              <i class="ph ph-funnel"></i> Filter
+            </button>
+             <a href="{% url 'production_list' %}" class="btn btn-outline-secondary btn-sm">
+              <i class="ph ph-x"></i> Clear
+            </a>
+          </form>
+        </div>
+
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
@@ -55,8 +74,8 @@
             </tbody>
           </table>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </div>

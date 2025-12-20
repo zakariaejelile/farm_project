@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters, status
+from rest_framework import viewsets, permissions, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from farm.models import Species, Animal, FoodStock, Tasks, HealthLog, ProductionLog, WeatherLog
@@ -12,6 +12,9 @@ from farm.forms import AnimalForm, FoodStockForm, HealthLogForm, TaskForm, Produ
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .utils import get_weather
+from django.utils.timezone import now
+from datetime import timedelta
+
 
 User = get_user_model()
 
@@ -105,7 +108,14 @@ class WeatherLogViewSet(viewsets.ModelViewSet):
 @login_required
 def animal_list(request):
     animals = Animal.objects.filter(user=request.user)
-    return render(request, 'farm/animal_list.html', {'animals': animals})
+
+    query = request.GET.get("q")
+    if query:
+        animals = animals.filter(tag_number__icontains=query)
+
+    return render(request, "farm/animal_list.html", {
+        "animals": animals
+    })
 
 
 def animal_detail(request, pk):
@@ -113,6 +123,7 @@ def animal_detail(request, pk):
     return render(request, "farm/animal_detail.html", {
         "animal": animal
     })
+
 
 @login_required
 def animal_create(request):
@@ -154,7 +165,20 @@ def animal_delete(request, pk):
 @login_required
 def task_list(request):
     tasks = Tasks.objects.filter(user=request.user)
-    return render(request, 'farm/task_list.html', {'tasks': tasks})
+
+    # Get filter from dropdown
+    status_filter = request.GET.get("status")
+
+    if status_filter == "finished":
+        tasks = tasks.filter(completed=True)
+    elif status_filter == "unfinished":
+        tasks = tasks.filter(completed=False)
+
+    return render(request, "farm/task_list.html", {
+        "tasks": tasks,
+        "status_filter": status_filter
+    })
+
 
 @login_required
 def task_detail(request, pk):
@@ -198,11 +222,28 @@ def task_delete(request, pk):
 
 # FOOD STOCK VIEWS
 @login_required
-def food_stock(request): 
+def food_stock(request):
+    today = now().date()
+
     food_stocks = FoodStock.objects.filter(user=request.user)
-    return render(request, 'farm/food_stock.html', {
-        'food_stocks': food_stocks
+
+    quick = request.GET.get("quick")
+
+    if quick == "7":
+        food_stocks = food_stocks.filter(
+            expiry_date__gte=today,
+            expiry_date__lte=today + timedelta(days=7)
+        )
+    elif quick == "30":
+        food_stocks = food_stocks.filter(
+            expiry_date__gte=today,
+            expiry_date__lte=today + timedelta(days=30)
+        )
+
+    return render(request, "farm/food_stock.html", {
+        "food_stocks": food_stocks
     })
+
 
 @login_required
 def food_stock_detail(request, pk):
@@ -245,8 +286,22 @@ def food_stock_delete(request, pk):
 # PRODUCTION LOG VIEWS
 @login_required
 def production_list(request):
-    production_logs = ProductionLog.objects.filter(animal__user=request.user)
-    return render(request, 'farm/production_list.html', {'production_logs': production_logs})
+    production_logs = ProductionLog.objects.all()  # Or filter by user if needed
+
+    # Get date range from GET parameters
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if start_date:
+        production_logs = production_logs.filter(date__gte=start_date)
+    if end_date:
+        production_logs = production_logs.filter(date__lte=end_date)
+
+    return render(request, "farm/production_list.html", {
+        "production_logs": production_logs,
+        "start_date": start_date,
+        "end_date": end_date,
+    })
 
 @login_required
 def production_detail(request, pk):
@@ -289,8 +344,19 @@ def production_delete(request, pk):
 
 @login_required
 def health_log_list(request):
-    health_logs = HealthLog.objects.filter(recorded_by=request.user)
-    return render(request, 'farm/health_log_list.html', {'health_logs': health_logs})
+    health_logs = HealthLog.objects.all()  # Or filter by user if needed
+
+    # Get animal filter from GET parameters
+    animal_filter = request.GET.get('animal', '').strip()
+    if animal_filter:
+        # Filter using Animal's tag_number field
+        health_logs = health_logs.filter(animal__tag_number__icontains=animal_filter)
+
+    return render(request, "farm/health_log_list.html", {
+        "health_logs": health_logs,
+        "animal_filter": animal_filter,
+    })
+
 
 @login_required
 def health_log_detail(request, pk):

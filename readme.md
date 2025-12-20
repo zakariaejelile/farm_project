@@ -156,8 +156,6 @@ farm_project/
 ## 🔮 Future Roadmap #
 #######################
 
-** Adding search by and filter options to list Views
-
 # 🔔 Notification System
 ***************************
 
